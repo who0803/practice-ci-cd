@@ -1,0 +1,17 @@
+# codecov.yml
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto # 기준 커버리지 자동 설정
+        threshold: 0% # 이탈 허용 범위 (0% 초과 떨어지면 실패)
+        base: auto # 비교 기준은 자동으로 설정
+
+comment:
+  layout: " diff, flags, files" # 댓글 레이아웃
+  behavior: default
+  require_changes: false # 커버리지 변화 없을 때도 댓글 작성
+  require_base: false
+  require_head: true
+  hide_project_coverage: false # true이면 diff(변경된 부분)만 보여줌
