@@ -38,8 +38,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies # ✅ 이게 꼭 필요함!
-        run: NODE_ENV= npm ci
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          NODE_ENV=development npm ci
 
       - name: Install Cypress binary
         run: npx cypress install
