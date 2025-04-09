@@ -52,8 +52,10 @@ jobs:
           parallel: true
           group: "UI-Chrome"
           start: npm start
+          wait-on: "http://localhost:3000"
           browser: chrome
         env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMIT_INFO_MESSAGE: ${{ github.event.pull_request.title }}
           COMMIT_INFO_SHA: ${{ github.event.pull_request.head.sha }}
