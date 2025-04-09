@@ -12,24 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build the app
-        run: npm run build
-        continue-on-error: false
-
-      - name: Check .next exists
-        run: ls -la .next # 👉 디버깅용. 이게 없으면 다음 step 에러 남
+      - name: Cypress install
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+          build: npm run build
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
         with:
           name: build
           if-no-files-found: error
-          path: |
-            .next
-            .next/**/*
+          include-hidden-files: true
+          path: .next
 
   cypress-run:
     runs-on: ubuntu-latest
