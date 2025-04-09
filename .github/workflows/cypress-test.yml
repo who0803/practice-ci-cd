@@ -17,6 +17,7 @@ jobs:
 
       - name: Build the app
         run: npm run build
+        continue-on-error: false
 
       - name: Check .next exists
         run: ls -la .next # 👉 디버깅용. 이게 없으면 다음 step 에러 남
@@ -26,7 +27,7 @@ jobs:
         with:
           name: build
           if-no-files-found: error
-          path: .next
+          path: .next/**
 
   cypress-run:
     runs-on: ubuntu-latest
