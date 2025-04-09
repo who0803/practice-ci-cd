@@ -48,12 +48,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          # record: true
-          parallel: true
-          group: "UI-Chrome"
           start: npm start
           browser: chrome
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMIT_INFO_MESSAGE: ${{ github.event.pull_request.title }}
-          COMMIT_INFO_SHA: ${{ github.event.pull_request.head.sha }}
