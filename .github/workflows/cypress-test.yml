@@ -27,7 +27,9 @@ jobs:
         with:
           name: build
           if-no-files-found: error
-          path: .next/**/*
+          path: |
+            .next
+            .next/**/*
 
   cypress-run:
     runs-on: ubuntu-latest
