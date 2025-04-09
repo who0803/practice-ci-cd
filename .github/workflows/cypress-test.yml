@@ -12,14 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Cypress binary
-        run: npx cypress install
-
-      - name: Build the app
-        run: npm run build
+      - name: Cypress install
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+          build: npm run build
 
       - name: Save node_modules and build folder
         uses: actions/upload-artifact@v4
@@ -51,7 +48,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          record: true
+          # record: true
           parallel: true
           group: "UI-Chrome"
           start: npm start
