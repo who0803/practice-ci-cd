@@ -31,7 +31,7 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     container:
-      image: cypress/browsers:node-20.10.0-chrome-120.0.6099.71-1-ff-121.0-edge-120.0.2210.61
+      image: cypress/browsers:22.12.0
       options: --user 1001
     needs: install
 
