@@ -22,7 +22,9 @@ jobs:
           name: build-and-deps
           if-no-files-found: error
           include-hidden-files: true
-          path: .next
+          path: |
+            node_modules
+            .next
 
   cypress-run:
     runs-on: ubuntu-latest
