@@ -22,9 +22,7 @@ jobs:
           name: build-and-deps
           if-no-files-found: error
           include-hidden-files: true
-          path: |
-            node_modules
-            .next
+          path: .next
 
   generate-specs:
     runs-on: ubuntu-latest
