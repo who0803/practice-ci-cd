@@ -1,8 +1,6 @@
 name: Cypress Tests
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -18,38 +16,55 @@ jobs:
           runTests: false
           build: npm run build
 
-      - name: Save build folder
+      - name: Save node_modules and build folder
         uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: build-and-deps
           if-no-files-found: error
-          path: .next
+          include-hidden-files: true
+          path: |
+            node_modules
+            .next
+
+  generate-specs:
+    runs-on: ubuntu-latest
+    outputs:
+      specs: ${{ steps.set-specs.outputs.specs }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: set-specs
+        run: |
+          SPECS=$(find cypress/e2e -name "*.cy.ts" -printf '"%p",')
+          SPECS="[${SPECS%,}]"
+          echo "specs=$SPECS" >> $GITHUB_OUTPUT
 
   cypress-run:
     runs-on: ubuntu-latest
-    needs: install
+    needs:
+      - install
+      - generate-specs
+    container:
+      image: cypress/browsers:22.12.0
+      options: --user 1001
 
     strategy:
       fail-fast: false
       matrix:
-        containers: [1, 2, 3, 4]
+        spec: ${{ fromJson(needs.generate-specs.outputs.specs) }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v4
+      - name: Download node_modules and build folder
+        uses: actions/download-artifact@v4
         with:
-          name: build
+          name: build-and-deps
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          record: true
-          parallel: true
-          group: "UI-Chrome"
+          build: npm run build
           start: npm start
+          wait-on: "http://localhost:3000"
           browser: chrome
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMIT_INFO_MESSAGE: ${{ github.event.pull_request.title }}
-          COMMIT_INFO_SHA: ${{ github.event.pull_request.head.sha }}
+          spec: ${{ matrix.spec }}
